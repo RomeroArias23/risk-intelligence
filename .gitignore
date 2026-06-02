@@ -1,0 +1,32 @@
+# === Maven build output ===
+target/
+
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# === Eclipse / VS Code ===
+.classpath
+.project
+.settings/
+.vscode/
+bin/
+
+# === macOS ===
+.DS_Store
+
+# === Logs ===
+*.log
+logs/
+
+# === Secrets / local config ===
+.env
+.env.local
+application-local.properties
+application-secrets.properties
+
+# === Spring Boot ===
+HELP.md
