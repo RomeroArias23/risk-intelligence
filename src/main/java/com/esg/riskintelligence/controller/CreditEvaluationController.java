@@ -2,6 +2,8 @@ package com.esg.riskintelligence.controller;
 
 import com.esg.riskintelligence.dto.CreditApplicationRequest;
 import com.esg.riskintelligence.dto.CreditEvaluationResponse;
+import com.esg.riskintelligence.dto.EnrichedEvaluationResponse;
+import com.esg.riskintelligence.service.CreditAnalysisService;
 import com.esg.riskintelligence.service.EsgScoringService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,9 +24,13 @@ import java.util.UUID;
 public class CreditEvaluationController {
 
     private final EsgScoringService esgScoringService;
+    private final CreditAnalysisService creditAnalysisService;
 
-    public CreditEvaluationController(EsgScoringService esgScoringService) {
+    public CreditEvaluationController(
+            EsgScoringService esgScoringService,
+            CreditAnalysisService creditAnalysisService) {
         this.esgScoringService = esgScoringService;
+        this.creditAnalysisService = creditAnalysisService;
     }
 
     @PostMapping
@@ -41,5 +48,12 @@ public class CreditEvaluationController {
     @GetMapping("/{id}")
     public CreditEvaluationResponse findById(@PathVariable UUID id) {
         return esgScoringService.findById(id);
+    }
+
+    @PostMapping("/{id}/analyze")
+    public EnrichedEvaluationResponse analyze(
+            @PathVariable UUID id,
+            @RequestParam(defaultValue = "manufacturing") String industry) {
+        return creditAnalysisService.analyze(id, industry);
     }
 }
